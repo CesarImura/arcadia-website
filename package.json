@@ -1,0 +1,37 @@
+{
+  "name": "arcadia-website",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@portabletext/react": "^3.2.1",
+    "@sanity/image-url": "^1.1.0",
+    "@sanity/vision": "^3.72.1",
+    "gsap": "^3.15.0",
+    "lenis": "^1.3.25",
+    "next": "^15.2.0",
+    "next-sanity": "^9.8.32",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "resend": "^4.1.2",
+    "sanity": "^3.72.1",
+    "split-type": "^0.3.4",
+    "styled-components": "^6.1.15"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "^15.2.0",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
