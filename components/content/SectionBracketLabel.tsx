@@ -1,24 +1,30 @@
 import Image from "next/image";
+import { getSectionIndex, type NumberedSectionKey } from "@/lib/section-index";
 
 type SectionBracketLabelProps = {
+  sectionKey?: NumberedSectionKey;
   index?: string;
   label: string;
   tone?: "cyan" | "black";
+  showIndex?: boolean;
 };
 
 export function SectionBracketLabel({
-  index = "nº001",
+  sectionKey,
+  index,
   label,
   tone = "cyan",
+  showIndex = true,
 }: SectionBracketLabelProps) {
   const isCyan = tone === "cyan";
-  const textClass = isCyan ? "text-[#c0edff]" : "text-black";
+  const textClass = isCyan ? "text-[#c0edff]" : "text-black opacity-50";
   const bracketLeft = isCyan
     ? "/images/philosophy/bracket-cyan-left.svg"
     : "/images/hero/bracket-left.svg";
   const bracketRight = isCyan
     ? "/images/philosophy/bracket-cyan-right.svg"
     : "/images/hero/bracket-right.svg";
+  const resolvedIndex = sectionKey ? getSectionIndex(sectionKey) : index;
 
   return (
     <div
@@ -31,8 +37,12 @@ export function SectionBracketLabel({
         height={20}
         className="h-5 w-[7px]"
       />
-      <span>{index}</span>
-      <span>/</span>
+      {showIndex && resolvedIndex ? (
+        <>
+          <span>{resolvedIndex}</span>
+          <span>/</span>
+        </>
+      ) : null}
       <span>{label}</span>
       <Image
         src={bracketRight}

@@ -1,23 +1,37 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { PostCard } from "@/components/cards/PostCard";
+import { LastCallSection } from "@/components/content/LastCallSection";
+import { FaqSection } from "@/components/content/FaqSection";
+import { BlogPostsSection } from "@/components/content/BlogPostsSection";
 import { CasesGallerySection } from "@/components/content/CasesGallerySection";
 import { Hero } from "@/components/content/Hero";
 import { ImageMarqueeSection } from "@/components/content/ImageMarqueeSection";
 import { PhilosophySection } from "@/components/content/PhilosophySection";
-import { Container } from "@/components/ui/Container";
-import { SectionHeading } from "@/components/ui/SectionHeading";
+import { CompanyStatsSection } from "@/components/content/CompanyStatsSection";
+import { ProcessSection } from "@/components/content/ProcessSection";
+import { SocialProofSection } from "@/components/content/SocialProofSection";
+import { StatementSection } from "@/components/content/StatementSection";
+import { WordDividerMarquee } from "@/components/content/WordDividerMarquee";
+import { UspCardsSection } from "@/components/content/UspCardsSection";
 import { buildMetadata } from "@/lib/metadata";
 import {
   previewHomePage,
   previewSiteSettings,
 } from "@/lib/preview/home";
 import { isPreviewMode } from "@/lib/preview/is-preview-mode";
-import { homePageQuery, siteSettingsQuery } from "@/lib/queries";
+import { homePageQuery, latestPostsQuery, siteSettingsQuery } from "@/lib/queries";
 import { sanityFetch } from "@/lib/sanity/fetch";
-import type { HomePage, SiteSettings } from "@/lib/types";
+import type { HomePage, Post, SiteSettings } from "@/lib/types";
 import { parsePhilosophyStatement } from "@/lib/philosophy-statement";
+import { defaultBlogSection } from "@/lib/blog-section";
+import { defaultDividerMarqueeWords } from "@/lib/divider-marquee";
 import { defaultMarqueeImages, type MarqueeImage } from "@/lib/marquee-images";
+import { defaultUspSection } from "@/lib/usp-cards";
+import { defaultStatementSection } from "@/lib/statement-section";
+import { resolveLastCallSection } from "@/lib/map-last-call-section";
+import { resolveFaqSection } from "@/lib/map-faq-section";
+import { resolveCompanyStatsSection } from "@/lib/map-company-stats-section";
+import { resolveProcessSection } from "@/lib/map-process-section";
+import { defaultSocialProofSection } from "@/lib/social-proof-section";
 import { urlFor } from "@/lib/sanity/image";
 
 const defaultPhilosophyStatement =
@@ -50,6 +64,46 @@ function resolveMarqueeImages(homePage?: HomePage | null): MarqueeImage[] {
   return defaultMarqueeImages;
 }
 
+function resolveUspSection(homePage?: HomePage | null) {
+  const cards = homePage?.uspCards?.filter(
+    (card) => card.number && card.title && card.description,
+  );
+
+  return {
+    title: homePage?.uspTitle || defaultUspSection.title,
+    description: homePage?.uspDescription || defaultUspSection.description,
+    cards: cards?.length ? cards : defaultUspSection.cards,
+    ctaHref: homePage?.uspCta?.href || defaultUspSection.ctaHref,
+    ctaLabel: homePage?.uspCta?.label || defaultUspSection.ctaLabel,
+  };
+}
+
+function resolveStatementSection(homePage?: HomePage | null) {
+  const image = homePage?.statementImage?.asset
+    ? {
+        src: urlFor(homePage.statementImage).width(1148).height(1482).quality(85).url(),
+        alt: homePage.statementImage.alt || defaultStatementSection.imageAlt,
+      }
+    : {
+        src: defaultStatementSection.imageSrc,
+        alt: defaultStatementSection.imageAlt,
+      };
+
+  return {
+    leadText: homePage?.statementLeadText || defaultStatementSection.leadText,
+    trailingLineOne:
+      homePage?.statementTrailingLineOne ||
+      defaultStatementSection.trailingLineOne,
+    trailingLineTwo:
+      homePage?.statementTrailingLineTwo ||
+      defaultStatementSection.trailingLineTwo,
+    supportText:
+      homePage?.statementSupportText || defaultStatementSection.supportText,
+    imageSrc: image.src,
+    imageAlt: image.alt,
+  };
+}
+
 const defaultHero = {
   eyebrow: "nossos resultados",
   title: "Marketing feito por quem entende arquitetura.",
@@ -59,11 +113,20 @@ const defaultHero = {
   secondaryCta: { label: "Veja nosso trabalho", href: "/sobre" },
 };
 
+function resolveDividerMarqueeWords(homePage?: HomePage | null): string[] {
+  const words = homePage?.dividerMarqueeWords
+    ?.map((word) => word.trim())
+    .filter(Boolean);
+
+  return words?.length ? words : defaultDividerMarqueeWords;
+}
+
 async function getHomeData() {
   if (isPreviewMode()) {
     return {
       settings: previewSiteSettings,
       homePage: previewHomePage,
+      latestPosts: [] as Post[],
     };
   }
 
@@ -78,9 +141,18 @@ async function getHomeData() {
     }).catch(() => null),
   ]);
 
+  const limit = homePage?.blogSectionLimit ?? defaultBlogSection.limit;
+
+  const latestPosts = await sanityFetch<Post[]>({
+    query: latestPostsQuery,
+    params: { limit },
+    tags: ["post"],
+  }).catch(() => []);
+
   return {
     settings: settings || previewSiteSettings,
     homePage,
+    latestPosts,
   };
 }
 
@@ -101,10 +173,15 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function HomePage() {
-  const { homePage } = await getHomeData();
+  const { homePage, latestPosts } = await getHomeData();
 
   const featuredProjects = homePage?.featuredProjects || [];
-  const featuredPosts = homePage?.featuredPosts || [];
+  const uspSection = resolveUspSection(homePage);
+  const statementSection = resolveStatementSection(homePage);
+  const processSection = resolveProcessSection(homePage);
+  const companyStatsSection = resolveCompanyStatsSection(homePage);
+  const faqSection = resolveFaqSection(homePage);
+  const lastCallSection = resolveLastCallSection(homePage);
 
   return (
     <>
@@ -117,7 +194,6 @@ export default async function HomePage() {
       />
 
       <PhilosophySection
-        index={homePage?.philosophyIndex}
         label={homePage?.philosophyLabel}
         statement={resolvePhilosophyStatement(homePage)}
         supportText={homePage?.philosophySupportText}
@@ -129,39 +205,43 @@ export default async function HomePage() {
 
       <CasesGallerySection
         projects={featuredProjects}
-        index={homePage?.casesIndex}
         label={homePage?.casesLabel}
       />
 
-      <section className="py-20">
-        <Container className="space-y-10">
-          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-            <SectionHeading
-              eyebrow="Blog"
-              title="Últimas publicações"
-              description="Insights, novidades e bastidores do nosso trabalho."
-            />
-            <Link
-              href="/blog"
-              className="text-sm font-medium text-neutral-700 underline underline-offset-4"
-            >
-              Ver blog completo
-            </Link>
-          </div>
+      <UspCardsSection
+        title={uspSection.title}
+        description={uspSection.description}
+        cards={uspSection.cards}
+        ctaHref={uspSection.ctaHref}
+        ctaLabel={uspSection.ctaLabel}
+      />
 
-          {featuredPosts.length ? (
-            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-              {featuredPosts.map((post) => (
-                <PostCard key={post._id} post={post} />
-              ))}
-            </div>
-          ) : (
-            <div className="rounded-3xl border border-dashed border-border p-10 text-center text-neutral-500">
-              Adicione posts em destaque no Sanity Studio.
-            </div>
-          )}
-        </Container>
-      </section>
+      <StatementSection {...statementSection} />
+
+      <SocialProofSection
+        projects={featuredProjects}
+        title={homePage?.socialProofTitle || defaultSocialProofSection.title}
+        description={
+          homePage?.socialProofDescription ||
+          defaultSocialProofSection.description
+        }
+      />
+
+      <ProcessSection {...processSection} />
+
+      <CompanyStatsSection {...companyStatsSection} />
+
+      <WordDividerMarquee words={resolveDividerMarqueeWords(homePage)} />
+
+      <BlogPostsSection
+        posts={latestPosts}
+        title={homePage?.blogSectionTitle || defaultBlogSection.title}
+        label={homePage?.blogSectionLabel || defaultBlogSection.label}
+      />
+
+      <FaqSection {...faqSection} />
+
+      <LastCallSection {...lastCallSection} />
     </>
   );
 }

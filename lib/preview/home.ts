@@ -6,8 +6,21 @@ export const previewHeroImageSrc =
 export const previewSiteSettings: SiteSettings = {
   siteName: "Arcadia",
   tagline: "Projetos institucionais que conectam marca, estratégia e experiência digital.",
-  footerText:
-    "Estúdio criativo especializado em comunicação institucional, branding e experiências digitais.",
+  footerPrimaryCta: {
+    label: "Agendar ligação",
+    href: "/contato",
+  },
+  footerSecondaryCta: {
+    label: "Veja nossos preços",
+    href: "/contato",
+  },
+  footerLinks: [
+    { label: "Sobre nós", href: "/sobre" },
+    { label: "Cases de sucesso", href: "/projetos" },
+    { label: "Blog", href: "/blog" },
+    { label: "Contato", href: "/contato" },
+    { label: "Política de privacidade", href: "/paginas/privacidade" },
+  ],
   contactEmail: "contato@arcadia.com.br",
   contactPhone: "+55 (11) 99999-0000",
   contactAddress: "São Paulo, SP — Brasil",
@@ -30,7 +43,6 @@ export const previewHomePage: HomePage = {
     label: "Veja nosso trabalho",
     href: "/sobre",
   },
-  philosophyIndex: "nº001",
   philosophyLabel: "nossa visão",
   philosophyStatement:
     "Na Arc. acreditamos que talento|sem visibilidade é potencial desperdiçado, por isso facilitamos o crescimento de escritórios de excelência até que não dependam mais de indicação e se tornem referência no que fazem.",

@@ -51,6 +51,30 @@
   font-family: "Arc Mono", var(--font-geist-mono), ui-monospace, monospace;
 }
 
+@utility text-arc-heading {
+  font-size: clamp(1.625rem, 1.125rem + 1.25vw, 2.5rem);
+}
+
+@utility text-arc-heading-lg {
+  font-size: clamp(1.75rem, 1.25rem + 1.5vw, 2.75rem);
+}
+
+@utility text-arc-display {
+  font-size: clamp(2rem, 1.5rem + 2vw, 3.25rem);
+}
+
+@utility text-arc-stat {
+  font-size: clamp(2rem, 1.25rem + 2vw, 3rem);
+}
+
+@utility text-arc-hero {
+  font-size: clamp(1.875rem, 1rem + 3.5vw, 3.5rem);
+}
+
+@utility text-arc-card-title {
+  font-size: clamp(1.25rem, 1rem + 0.6vw, 1.625rem);
+}
+
 @keyframes image-marquee {
   from {
     transform: translate3d(0, 0, 0);
@@ -63,6 +87,10 @@
 
 @utility animate-image-marquee {
   animation: image-marquee 55s linear infinite;
+}
+
+@utility animate-social-proof-marquee {
+  animation: image-marquee 50s linear infinite;
 }
 
 body {

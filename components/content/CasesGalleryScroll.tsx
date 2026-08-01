@@ -15,7 +15,6 @@ const CASE_SCROLL_STEP_VH = 42;
 
 type CasesGalleryScrollProps = {
   cases: CaseShowcaseItem[];
-  index?: string;
   label?: string;
 };
 
@@ -67,7 +66,7 @@ function CaseListColumn({
               }}
             >
               <span
-                className="truncate font-arc-sans text-[clamp(1.75rem,4vw,3rem)] leading-[1.3]"
+                className="truncate font-arc-sans text-arc-heading leading-[1.3]"
                 style={{ color: item.color }}
               >
                 {side === "left" ? caseItem.client : caseItem.location}
@@ -82,7 +81,6 @@ function CaseListColumn({
 
 export function CasesGalleryScroll({
   cases,
-  index = "nº002",
   label = "nosso impacto",
 }: CasesGalleryScrollProps) {
   const sectionRef = useRef<HTMLElement>(null);
@@ -143,13 +141,14 @@ export function CasesGalleryScroll({
       className="relative overflow-x-clip bg-[#04040d]"
       style={{ height: `${sectionHeightVh}vh` }}
       aria-label="Galeria de cases"
+      data-header-theme="dark"
     >
       <div
         ref={pinRef}
         className="relative flex h-svh flex-col overflow-hidden"
       >
         <div className="absolute left-1/2 top-[83px] z-20 -translate-x-1/2">
-          <SectionBracketLabel index={index} label={label} tone="cyan" />
+          <SectionBracketLabel sectionKey="cases" label={label} tone="cyan" />
         </div>
 
         <div

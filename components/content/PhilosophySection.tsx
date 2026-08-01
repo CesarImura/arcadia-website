@@ -7,7 +7,6 @@ import { PhilosophyStatementReveal } from "@/components/content/PhilosophyStatem
 import { SectionBracketLabel } from "@/components/content/SectionBracketLabel";
 
 type PhilosophySectionProps = {
-  index?: string;
   label?: string;
   statement?: string;
   supportText?: string;
@@ -16,7 +15,6 @@ type PhilosophySectionProps = {
 };
 
 const defaults = {
-  index: "nº001",
   label: "nossa visão",
   statement:
     "Na Arc. acreditamos que talento|sem visibilidade é potencial desperdiçado, por isso facilitamos o crescimento de escritórios de excelência até que não dependam mais de indicação e se tornem referência no que fazem.",
@@ -27,7 +25,6 @@ const defaults = {
 };
 
 export function PhilosophySection({
-  index = defaults.index,
   label = defaults.label,
   statement = defaults.statement,
   supportText = defaults.supportText,
@@ -38,13 +35,16 @@ export function PhilosophySection({
   const ctaHref = cta?.href || defaults.cta.href;
 
   return (
-    <section className="relative overflow-x-clip overflow-hidden bg-[#04040d] text-white">
+    <section
+      className="relative overflow-x-clip overflow-hidden bg-[#04040d] text-white"
+      data-header-theme="dark"
+    >
       <CityscapeBorder />
 
       <div className="mx-auto max-w-[1920px] px-6 py-16 md:px-20 md:py-24">
         <div className="grid gap-10 lg:grid-cols-[192px_1fr] lg:gap-16">
           <aside className="space-y-5">
-            <SectionBracketLabel index={index} label={label} tone="cyan" />
+            <SectionBracketLabel sectionKey="philosophy" label={label} tone="cyan" />
             <div className="relative hidden aspect-square max-h-[422px] w-full overflow-hidden opacity-15 lg:block">
               <Image
                 src="/images/philosophy/grid-base.png"

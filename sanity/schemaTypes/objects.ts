@@ -60,6 +60,46 @@ export const link = defineType({
   ],
 });
 
+export const footerAiLink = defineType({
+  name: "footerAiLink",
+  title: "Link de IA",
+  type: "object",
+  fields: [
+    defineField({
+      name: "platform",
+      title: "Plataforma",
+      type: "string",
+      options: {
+        list: [
+          { title: "Claude", value: "claude" },
+          { title: "Perplexity", value: "perplexity" },
+          { title: "Google Gemini", value: "gemini" },
+          { title: "ChatGPT", value: "chatgpt" },
+        ],
+      },
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: "url",
+      title: "URL",
+      type: "url",
+      validation: (rule) => rule.required(),
+    }),
+  ],
+  preview: {
+    select: {
+      platform: "platform",
+      url: "url",
+    },
+    prepare({ platform, url }) {
+      return {
+        title: platform || "Plataforma",
+        subtitle: url,
+      };
+    },
+  },
+});
+
 export const socialLink = defineType({
   name: "socialLink",
   title: "Rede social",

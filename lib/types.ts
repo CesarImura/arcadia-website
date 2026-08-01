@@ -26,13 +26,23 @@ export type SocialLink = {
   url: string;
 };
 
+export type FooterAiLink = {
+  platform: "claude" | "perplexity" | "gemini" | "chatgpt";
+  url: string;
+};
+
 export type SiteSettings = {
   siteName: string;
   tagline?: string;
   logo?: SanityImage;
   navigation?: Link[];
   footerText?: string;
+  footerPrimaryCta?: Link;
+  footerSecondaryCta?: Link;
   footerLinks?: Link[];
+  footerAiSummaryTitle?: string;
+  footerAiLinks?: FooterAiLink[];
+  footerCopyright?: string;
   socialLinks?: SocialLink[];
   contactEmail?: string;
   contactPhone?: string;
@@ -97,7 +107,6 @@ export type HomePage = {
   heroImage?: SanityImage;
   heroCta?: Link;
   heroSecondaryCta?: Link;
-  philosophyIndex?: string;
   philosophyLabel?: string;
   philosophyStatement?: string;
   philosophyLead?: string;
@@ -105,9 +114,49 @@ export type HomePage = {
   philosophySupportText?: string;
   philosophyCta?: Link;
   philosophyValues?: string[];
-  casesIndex?: string;
   casesLabel?: string;
   marqueeGallery?: SanityImage[];
+  uspTitle?: string;
+  uspDescription?: string;
+  uspCards?: { number: string; title: string; description: string }[];
+  uspCta?: Link;
+  statementLeadText?: string;
+  statementTrailingLineOne?: string;
+  statementTrailingLineTwo?: string;
+  statementSupportText?: string;
+  statementImage?: SanityImage;
+  socialProofTitle?: string;
+  socialProofDescription?: string;
+  processLabel?: string;
+  processTitle?: string;
+  processDescription?: string;
+  processCta?: Link;
+  processSteps?: {
+    title: string;
+    description?: string;
+    image?: SanityImage;
+  }[];
+  companyStatsLabel?: string;
+  companyStatsTitle?: string;
+  companyStatsDescription?: string;
+  companyStatsCta?: Link;
+  companyStats?: { value: string; description: string }[];
+  dividerMarqueeWords?: string[];
+  blogSectionLabel?: string;
+  blogSectionTitle?: string;
+  blogSectionLimit?: number;
+  faqLabel?: string;
+  faqTitle?: string;
+  faqItems?: { question: string; answer: string }[];
+  lastCallLabel?: string;
+  lastCallTitle?: string;
+  lastCallDescription?: string;
+  lastCallContact?: {
+    name: string;
+    role: string;
+    photo?: SanityImage;
+  };
+  lastCallCta?: Link;
   introTitle?: string;
   introText?: PortableTextBlock[];
   featuredProjects?: Project[];

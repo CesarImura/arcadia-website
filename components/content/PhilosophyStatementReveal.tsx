@@ -65,7 +65,7 @@ export function PhilosophyStatementReveal({
   return (
     <p
       ref={containerRef}
-      className="text-[clamp(1.75rem,4vw,3rem)] leading-[1.3] text-white"
+      className="text-arc-heading leading-[1.3] text-white"
       aria-label={`${highlight} ${body}`.trim()}
     >
       <span ref={textRef} className="opacity-30">

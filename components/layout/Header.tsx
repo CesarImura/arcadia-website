@@ -1,50 +1,61 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { HeaderSurface } from "@/lib/use-header-surface";
 import type { SiteSettings } from "@/lib/types";
 import { getNavigation } from "@/lib/utils";
 import { MobileNav } from "@/components/layout/MobileNav";
 
 type HeaderProps = {
   settings?: SiteSettings | null;
-  variant?: "default" | "hero";
+  variant?: "default" | "overlay";
+  surface?: HeaderSurface;
 };
 
-export function Header({ settings, variant = "default" }: HeaderProps) {
+export function Header({
+  settings,
+  variant = "default",
+  surface = "light",
+}: HeaderProps) {
   const navigation = getNavigation(settings);
-  const isHero = variant === "hero";
+  const isOverlay = variant === "overlay";
+  const onDark = isOverlay && surface === "dark";
 
   return (
     <header
       className={
-        isHero
-          ? "fixed inset-x-0 top-0 z-50 bg-transparent"
+        isOverlay
+          ? "fixed inset-x-0 top-0 z-50 bg-transparent transition-colors duration-300"
           : "sticky top-0 z-50 border-b border-border/80 bg-background/90 backdrop-blur-md"
       }
     >
       <div
-        className={`flex w-full items-center justify-between gap-6 px-6 md:px-20 ${isHero ? "h-[57px] py-2" : "h-16"}`}
+        className={`flex w-full items-center justify-between gap-6 px-6 md:px-20 ${isOverlay ? "h-[57px] py-2" : "h-16"}`}
       >
         <Link href="/" className="relative block h-7 w-[88px] shrink-0">
           <Image
             src="/images/hero/arc-logo.svg"
             alt={settings?.siteName || "Arcadia"}
             fill
-            className={`object-contain object-left ${isHero ? "brightness-0 invert" : ""}`}
+            className={`object-contain object-left transition-[filter] duration-300 ${onDark ? "brightness-0 invert" : ""}`}
             priority
           />
         </Link>
 
         <nav
-          className={`hidden items-center gap-4 md:flex ${isHero ? "text-sm uppercase tracking-[0.05em] text-white" : ""}`}
+          className={`hidden items-center gap-4 md:flex ${
+            onDark
+              ? "text-sm uppercase tracking-[0.05em] text-white"
+              : "text-sm font-medium uppercase tracking-[0.05em] text-neutral-900"
+          }`}
         >
           {navigation.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               className={
-                isHero
+                onDark
                   ? "transition hover:text-white/70"
-                  : "text-sm font-medium text-neutral-600 transition hover:text-neutral-900"
+                  : "transition hover:text-neutral-600"
               }
               target={item.openInNewTab ? "_blank" : undefined}
               rel={item.openInNewTab ? "noopener noreferrer" : undefined}
@@ -55,15 +66,22 @@ export function Header({ settings, variant = "default" }: HeaderProps) {
         </nav>
 
         <div className="flex items-center gap-3">
-          {isHero ? (
+          {isOverlay ? (
             <Link
               href="/contato"
-              className="hidden bg-white px-4 py-[15px] text-base leading-none text-black md:inline-flex"
+              className={`hidden px-4 py-[15px] text-base leading-none transition-colors duration-300 md:inline-flex ${
+                onDark
+                  ? "bg-white text-black"
+                  : "bg-neutral-900 text-white"
+              }`}
             >
               Entre em contato
             </Link>
           ) : null}
-          <MobileNav navigation={navigation} variant={isHero ? "hero" : "default"} />
+          <MobileNav
+            navigation={navigation}
+            variant={onDark ? "hero" : "default"}
+          />
         </div>
       </div>
     </header>

@@ -24,7 +24,10 @@ export function Hero({
   const secondaryHref = secondaryCta?.href || "/sobre";
 
   return (
-    <section className="relative h-[100svh] min-h-[600px] overflow-hidden bg-[#04040d]">
+    <section
+      className="relative h-[100svh] min-h-[600px] overflow-hidden bg-[#04040d]"
+      data-header-theme="dark"
+    >
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-b from-[#04040d] from-0% via-[#1b2d48] via-[42%] to-[#e2e4e3] to-100%" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_120%_80%_at_50%_0%,rgba(226,228,227,0.15),transparent_55%)]" />
@@ -58,7 +61,7 @@ export function Hero({
               {eyebrow}
             </p>
           </div>
-          <h1 className="max-w-[1045px] text-[clamp(2rem,5.5vw,4.5rem)] font-normal leading-[1.1] tracking-tight text-white">
+          <h1 className="max-w-[1045px] text-arc-hero font-normal leading-[1.1] tracking-tight text-white">
             {title}
           </h1>
         </div>

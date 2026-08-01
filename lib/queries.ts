@@ -59,7 +59,12 @@ export const siteSettingsQuery = `*[_type == "siteSettings"][0] {
   logo { ${imageFields} },
   navigation[] { label, href, openInNewTab },
   footerText,
+  footerPrimaryCta { label, href, openInNewTab },
+  footerSecondaryCta { label, href, openInNewTab },
   footerLinks[] { label, href, openInNewTab },
+  footerAiSummaryTitle,
+  footerAiLinks[] { platform, url },
+  footerCopyright,
   socialLinks[] { platform, url },
   contactEmail,
   contactPhone,
@@ -71,6 +76,11 @@ export const siteSettingsQuery = `*[_type == "siteSettings"][0] {
   }
 }`;
 
+export const footerFeaturedProjectsQuery = `*[_type == "homePage"][0].featuredProjects[]-> {
+  title,
+  slug
+}`;
+
 export const homePageQuery = `*[_type == "homePage"][0] {
   heroEyebrow,
   heroTitle,
@@ -78,7 +88,6 @@ export const homePageQuery = `*[_type == "homePage"][0] {
   heroImage { ${imageFields} },
   heroCta { label, href, openInNewTab },
   heroSecondaryCta { label, href, openInNewTab },
-  philosophyIndex,
   philosophyLabel,
   philosophyStatement,
   philosophyLead,
@@ -86,9 +95,49 @@ export const homePageQuery = `*[_type == "homePage"][0] {
   philosophySupportText,
   philosophyCta { label, href, openInNewTab },
   philosophyValues,
-  casesIndex,
   casesLabel,
   marqueeGallery[] { ${imageFields} },
+  uspTitle,
+  uspDescription,
+  uspCards[] { number, title, description },
+  uspCta { label, href, openInNewTab },
+  statementLeadText,
+  statementTrailingLineOne,
+  statementTrailingLineTwo,
+  statementSupportText,
+  statementImage { ${imageFields} },
+  socialProofTitle,
+  socialProofDescription,
+  processLabel,
+  processTitle,
+  processDescription,
+  processCta { label, href, openInNewTab },
+  processSteps[] {
+    title,
+    description,
+    image { ${imageFields} }
+  },
+  companyStatsLabel,
+  companyStatsTitle,
+  companyStatsDescription,
+  companyStatsCta { label, href, openInNewTab },
+  companyStats[] { value, description },
+  dividerMarqueeWords,
+  blogSectionLabel,
+  blogSectionTitle,
+  blogSectionLimit,
+  faqLabel,
+  faqTitle,
+  faqItems[] { question, answer },
+  lastCallLabel,
+  lastCallTitle,
+  lastCallDescription,
+  lastCallContact {
+    name,
+    role,
+    photo { ${imageFields} }
+  },
+  lastCallCta { label, href, openInNewTab },
   introTitle,
   introText,
   featuredProjects[]-> { ${projectFields} },
@@ -106,6 +155,10 @@ export const projectBySlugQuery = `*[_type == "project" && slug.current == $slug
 }`;
 
 export const postsQuery = `*[_type == "post"] | order(publishedAt desc) {
+  ${postFields}
+}`;
+
+export const latestPostsQuery = `*[_type == "post"] | order(publishedAt desc)[0...$limit] {
   ${postFields}
 }`;
 
