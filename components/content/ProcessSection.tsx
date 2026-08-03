@@ -26,7 +26,7 @@ export function ProcessSection({
             </h2>
           </div>
 
-          <div className="flex max-w-[721px] flex-col gap-6">
+          <div className="flex max-w-[520px] flex-col gap-6">
             <p className="text-lg leading-[1.5] text-white/70">{description}</p>
             <Link
               href={ctaHref}

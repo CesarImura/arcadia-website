@@ -15,6 +15,8 @@ export const homePage = defineType({
       name: "heroTitle",
       title: "Título do hero",
       type: "string",
+      description:
+        'Use "|" para definir a quebra de linha. Ex.: Marketing feito por quem entende|o mercado de arquitetura.',
       validation: (rule) => rule.required(),
     }),
     defineField({

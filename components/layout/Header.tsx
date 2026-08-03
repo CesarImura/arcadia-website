@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
+import { ArcMenuLogo } from "@/components/layout/ArcMenuLogo";
 import type { HeaderSurface } from "@/lib/use-header-surface";
 import type { SiteSettings } from "@/lib/types";
 import { getNavigation } from "@/lib/utils";
@@ -31,14 +31,14 @@ export function Header({
       <div
         className={`flex w-full items-center justify-between gap-6 px-6 md:px-20 ${isOverlay ? "h-[57px] py-2" : "h-16"}`}
       >
-        <Link href="/" className="relative block h-7 w-[88px] shrink-0">
-          <Image
-            src="/images/hero/arc-logo.svg"
-            alt={settings?.siteName || "Arcadia"}
-            fill
-            className={`object-contain object-left transition-[filter] duration-300 ${onDark ? "brightness-0 invert" : ""}`}
-            priority
-          />
+        <Link
+          href="/"
+          aria-label={settings?.siteName || "Arcadia"}
+          className={`block shrink-0 transition-colors duration-300 ${
+            onDark ? "text-white" : "text-neutral-900"
+          }`}
+        >
+          <ArcMenuLogo className="h-7 w-auto" />
         </Link>
 
         <nav

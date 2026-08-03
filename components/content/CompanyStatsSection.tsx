@@ -19,10 +19,14 @@ export function CompanyStatsSection({
     >
       <div className="mx-auto max-w-[1920px] px-6 py-16 md:px-20 md:py-[120px]">
         <div className="mb-12 grid gap-8 lg:mb-20 lg:grid-cols-[1fr_minmax(0,429px)_1fr] lg:items-start">
-          <SectionBracketLabel label={label} tone="black" showIndex={false} />
+          <SectionBracketLabel
+            sectionKey="companyStats"
+            label={label}
+            tone="black"
+          />
 
           <div className="flex flex-col gap-6 lg:gap-8">
-            <h2 className="font-arc-sans text-arc-heading font-medium leading-[1.1]">
+            <h2 className="font-arc-sans text-arc-heading leading-[1.1]">
               {title}
             </h2>
             <p className="text-lg leading-[1.5] text-black/70">{description}</p>

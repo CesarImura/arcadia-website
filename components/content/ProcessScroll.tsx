@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ProcessImageFrame } from "@/components/content/ProcessImageFrame";
+import { ProcessTimeline } from "@/components/content/ProcessTimeline";
 import type { ProcessStep } from "@/lib/process-section";
 
 const PROCESS_SCROLL_STEP_VH = 42;
@@ -95,23 +96,7 @@ export function ProcessScroll({ steps }: ProcessScrollProps) {
         <div ref={pinRef} className="relative h-svh overflow-hidden">
           <div className="mx-auto flex h-full max-w-[1920px] items-center justify-between gap-12 px-20">
             <div className="relative min-w-0 max-w-[805px] flex-1">
-              <div
-                className="absolute -top-16 bottom-0 left-0 w-[14px]"
-                aria-hidden
-              >
-                <div className="relative h-full w-full">
-                  <Image
-                    src="/images/process/timeline-ruler.png"
-                    alt=""
-                    fill
-                    className="object-fill opacity-40"
-                  />
-                  <div
-                    className="absolute left-0 top-0 w-full bg-[#c0edff]/50"
-                    style={{ height: `${progress * 100}%` }}
-                  />
-                </div>
-              </div>
+              <ProcessTimeline progress={progress} />
 
               <div
                 className="relative will-change-transform pt-[28vh]"

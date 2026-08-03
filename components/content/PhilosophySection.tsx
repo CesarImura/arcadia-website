@@ -1,8 +1,7 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { Link as CtaLink } from "@/lib/types";
 import { ArcMethodologyBox } from "@/components/content/ArcMethodologyBox";
-import { CityscapeBorder } from "@/components/content/CityscapeBorder";
+import { PhilosophyDecorativeGrid } from "@/components/content/PhilosophyDecorativeGrid";
 import { PhilosophyStatementReveal } from "@/components/content/PhilosophyStatementReveal";
 import { SectionBracketLabel } from "@/components/content/SectionBracketLabel";
 
@@ -39,26 +38,11 @@ export function PhilosophySection({
       className="relative overflow-x-clip overflow-hidden bg-[#04040d] text-white"
       data-header-theme="dark"
     >
-      <CityscapeBorder />
-
-      <div className="mx-auto max-w-[1920px] px-6 py-16 md:px-20 md:py-24">
+      <div className="relative mx-auto max-w-[1920px] px-6 py-16 md:px-20 md:py-24">
         <div className="grid gap-10 lg:grid-cols-[192px_1fr] lg:gap-16">
-          <aside className="space-y-5">
+          <aside className="flex flex-col gap-5">
             <SectionBracketLabel sectionKey="philosophy" label={label} tone="cyan" />
-            <div className="relative hidden aspect-square max-h-[422px] w-full overflow-hidden opacity-15 lg:block">
-              <Image
-                src="/images/philosophy/grid-base.png"
-                alt=""
-                fill
-                className="object-cover"
-              />
-              <Image
-                src="/images/philosophy/grid-overlay.png"
-                alt=""
-                fill
-                className="object-cover mix-blend-screen"
-              />
-            </div>
+            <PhilosophyDecorativeGrid className="hidden min-h-0 flex-1 lg:block" />
           </aside>
 
           <div className="space-y-[53px]">

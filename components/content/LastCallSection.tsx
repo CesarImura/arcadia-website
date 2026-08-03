@@ -19,18 +19,25 @@ export function LastCallSection({
   ctaHref,
 }: LastCallSectionContent) {
   const sectionRef = useRef<HTMLElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   return (
     <section
       ref={sectionRef}
-      className="relative overflow-hidden bg-[#ececec] text-black"
+      className="relative isolate overflow-x-clip bg-[#ececec] py-12 text-black md:py-16"
       aria-label="Last call"
       data-header-theme="light"
     >
-      <LastCallFrames sectionRef={sectionRef} />
+      <div
+        ref={contentRef}
+        className="relative mx-auto flex min-h-[680px] w-full max-w-[1920px] flex-col items-center justify-center gap-12 px-6 md:min-h-[760px] md:gap-[59px] md:px-20"
+      >
+        <LastCallFrames
+          sectionRef={sectionRef}
+          contentRef={contentRef}
+        />
 
-      <div className="relative z-10 mx-auto flex max-w-[1920px] flex-col items-center gap-12 px-6 py-16 md:gap-[59px] md:px-20 md:py-[120px]">
-        <div className="flex max-w-[678px] flex-col items-center gap-4 text-center">
+        <div className="relative z-10 flex w-full max-w-[678px] flex-col items-center gap-4 text-center">
           <SectionBracketLabel
             sectionKey="lastCall"
             label={label}
@@ -44,7 +51,7 @@ export function LastCallSection({
           <p className="text-lg leading-[1.5] text-black/80">{description}</p>
         </div>
 
-        <div className="flex flex-col items-center justify-center gap-6 sm:flex-row sm:gap-8">
+        <div className="relative z-10 flex flex-col items-center justify-center gap-6 sm:flex-row sm:gap-8">
           <div className="flex items-center gap-4">
             <div className="relative size-20 shrink-0 overflow-hidden rounded-full bg-[#d9d9d9]">
               <Image

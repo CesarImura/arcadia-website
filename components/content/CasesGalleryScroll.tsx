@@ -66,7 +66,7 @@ function CaseListColumn({
               }}
             >
               <span
-                className="truncate font-arc-sans text-arc-heading leading-[1.3]"
+                className="truncate font-arc-display text-arc-heading leading-[1.3]"
                 style={{ color: item.color }}
               >
                 {side === "left" ? caseItem.client : caseItem.location}

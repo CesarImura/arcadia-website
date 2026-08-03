@@ -13,7 +13,7 @@ export function FaqSection({ label, title, items }: FaqSectionContent) {
       <div className="mx-auto flex max-w-[1920px] flex-col gap-12 px-6 py-16 md:flex-row md:items-start md:justify-between md:gap-16 md:px-20 md:py-[120px]">
         <div className="flex flex-col justify-between gap-12 md:min-h-[678px] md:max-w-[606px] md:self-stretch">
           <div className="flex flex-col gap-6">
-            <SectionBracketLabel label={label} tone="black" showIndex={false} />
+            <SectionBracketLabel sectionKey="faq" label={label} tone="black" />
             <h2 className="font-arc-sans text-arc-heading font-medium leading-[1.2]">
               {title}
             </h2>

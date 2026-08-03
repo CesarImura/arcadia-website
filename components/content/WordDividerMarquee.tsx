@@ -2,17 +2,20 @@
 
 import Image from "next/image";
 import { useRef } from "react";
+import { SectionBracketLabel } from "@/components/content/SectionBracketLabel";
+import { getSectionDefaultLabel } from "@/lib/section-index";
 import { useScrollVelocityMarquee } from "@/lib/use-scroll-velocity-marquee";
 
 type WordDividerMarqueeProps = {
   words: string[];
+  label?: string;
 };
 
 function MarqueeSequence({ words }: { words: string[] }) {
   return words.flatMap((word, index) => [
     <span
       key={`word-${index}`}
-      className="shrink-0 whitespace-nowrap font-arc-sans text-arc-display leading-[1.2] text-black"
+      className="shrink-0 whitespace-nowrap font-arc-display text-arc-display leading-[1.2] text-black"
     >
       {word}
     </span>,
@@ -33,7 +36,10 @@ function MarqueeSequence({ words }: { words: string[] }) {
   ]);
 }
 
-export function WordDividerMarquee({ words }: WordDividerMarqueeProps) {
+export function WordDividerMarquee({
+  words,
+  label = getSectionDefaultLabel("divider"),
+}: WordDividerMarqueeProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const sanitizedWords = words.map((word) => word.trim()).filter(Boolean);
 
@@ -49,6 +55,9 @@ export function WordDividerMarquee({ words }: WordDividerMarqueeProps) {
       aria-label="Marquee divisora"
       data-header-theme="light"
     >
+      <div className="mx-auto mb-6 flex max-w-[1920px] justify-center px-6 md:mb-8 md:px-20">
+        <SectionBracketLabel sectionKey="divider" label={label} tone="black" />
+      </div>
       <div className="relative">
         <div
           ref={trackRef}

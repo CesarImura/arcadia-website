@@ -2,11 +2,11 @@
 
 import { useEffect, type RefObject } from "react";
 import gsap from "gsap";
+import { getScrollVelocity } from "@/lib/scroll-velocity";
 
-const BASE_SPEED = 0.75;
-const VELOCITY_FACTOR = 0.35;
-const VELOCITY_DECAY = 0.88;
-const DEFAULT_DIRECTION = 1;
+const BASE_SPEED = 0.65;
+const VELOCITY_FACTOR = 0.035;
+const IDLE_DIRECTION = 1;
 
 export function useScrollVelocityMarquee(
   trackRef: RefObject<HTMLDivElement | null>,
@@ -20,9 +20,7 @@ export function useScrollVelocityMarquee(
 
     const motion = {
       offset: 0,
-      direction: DEFAULT_DIRECTION,
-      scrollVelocity: 0,
-      lastScrollY: window.scrollY,
+      direction: IDLE_DIRECTION,
       loopWidth: 0,
     };
 
@@ -36,7 +34,14 @@ export function useScrollVelocityMarquee(
 
     measure();
 
-    const resizeObserver = new ResizeObserver(measure);
+    const resizeObserver = new ResizeObserver(() => {
+      measure();
+      if (motion.loopWidth) {
+        motion.offset =
+          ((motion.offset % motion.loopWidth) + motion.loopWidth) %
+          motion.loopWidth;
+      }
+    });
     resizeObserver.observe(track);
 
     if (prefersReducedMotion) {
@@ -47,22 +52,14 @@ export function useScrollVelocityMarquee(
       const { loopWidth } = motion;
       if (!loopWidth) return;
 
-      const currentScrollY = window.scrollY;
-      const frameDelta = currentScrollY - motion.lastScrollY;
-      motion.lastScrollY = currentScrollY;
+      const scrollVelocity = getScrollVelocity();
 
-      if (Math.abs(frameDelta) > 0.01) {
-        motion.scrollVelocity = frameDelta;
-      } else {
-        motion.scrollVelocity *= VELOCITY_DECAY;
-      }
-
-      if (Math.abs(motion.scrollVelocity) > 0.05) {
-        motion.direction = motion.scrollVelocity > 0 ? -1 : 1;
+      if (Math.abs(scrollVelocity) > 0.05) {
+        motion.direction = scrollVelocity > 0 ? -1 : 1;
       }
 
       const speed =
-        BASE_SPEED + Math.abs(motion.scrollVelocity) * VELOCITY_FACTOR;
+        BASE_SPEED + Math.abs(scrollVelocity) * VELOCITY_FACTOR;
 
       motion.offset += motion.direction * speed;
 

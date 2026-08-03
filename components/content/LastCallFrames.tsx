@@ -7,41 +7,44 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const FRAME_LAYERS = [
   {
-    src: "/images/last-call/frame-inner.svg",
-    width: 1775,
-    height: 728,
-    depth: 18,
-    enterScale: 0.82,
+    src: "/images/last-call/frame-outer.svg",
+    width: 1441,
+    height: 476,
+    maxWidth: "min(76vw, 1400px)",
+    depth: 38,
   },
   {
     src: "/images/last-call/frame-middle.svg",
     width: 1119,
-    height: 332,
+    height: 354,
+    maxWidth: "min(64vw, 1090px)",
     depth: 28,
-    enterScale: 0.88,
   },
   {
-    src: "/images/last-call/frame-outer.svg",
-    width: 1441,
-    height: 476,
-    depth: 38,
-    enterScale: 0.94,
+    src: "/images/last-call/frame-inner.svg",
+    width: 1775,
+    height: 728,
+    maxWidth: "min(89vw, 1710px)",
+    depth: 18,
   },
 ] as const;
 
 type LastCallFramesProps = {
   sectionRef: React.RefObject<HTMLElement | null>;
+  contentRef: React.RefObject<HTMLDivElement | null>;
 };
 
-export function LastCallFrames({ sectionRef }: LastCallFramesProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
+export function LastCallFrames({
+  sectionRef,
+  contentRef,
+}: LastCallFramesProps) {
   const layerRefs = useRef<(HTMLDivElement | null)[]>([]);
   const mouseRef = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     const section = sectionRef.current;
-    const container = containerRef.current;
-    if (!section || !container) return;
+    const content = contentRef.current;
+    if (!section || !content) return;
 
     gsap.registerPlugin(ScrollTrigger);
 
@@ -54,7 +57,7 @@ export function LastCallFrames({ sectionRef }: LastCallFramesProps) {
     let scrollTrigger: ScrollTrigger | null = null;
 
     if (!prefersReducedMotion && layers.length) {
-      gsap.set(layers, { scale: 0.72, opacity: 0 });
+      gsap.set(layers, { scale: 0.92, opacity: 0 });
 
       entranceTween = gsap.to(layers, {
         scale: 1,
@@ -76,7 +79,7 @@ export function LastCallFrames({ sectionRef }: LastCallFramesProps) {
     const handleMouseMove = (event: MouseEvent) => {
       if (window.matchMedia("(max-width: 1023px)").matches) return;
 
-      const rect = section.getBoundingClientRect();
+      const rect = content.getBoundingClientRect();
       mouseRef.current = {
         x: (event.clientX - (rect.left + rect.width / 2)) / rect.width,
         y: (event.clientY - (rect.top + rect.height / 2)) / rect.height,
@@ -106,34 +109,36 @@ export function LastCallFrames({ sectionRef }: LastCallFramesProps) {
       entranceTween?.kill();
       scrollTrigger?.kill();
     };
-  }, [sectionRef]);
+  }, [sectionRef, contentRef]);
 
   return (
     <div
-      ref={containerRef}
-      className="pointer-events-none absolute inset-0 overflow-hidden"
+      className="pointer-events-none absolute inset-0 flex items-center justify-center"
       aria-hidden
     >
-      <div className="absolute left-1/2 top-1/2 flex w-full max-w-[1920px] -translate-x-1/2 -translate-y-1/2 items-center justify-center">
-        {FRAME_LAYERS.map((layer, index) => (
+      {FRAME_LAYERS.map((layer, index) => (
+        <div
+          key={layer.src}
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+          style={{ width: layer.maxWidth }}
+        >
           <div
-            key={layer.src}
             ref={(element) => {
               layerRefs.current[index] = element;
             }}
-            className="absolute w-[min(92vw,1775px)] will-change-transform"
+            className="will-change-transform"
           >
             <Image
               src={layer.src}
               alt=""
               width={layer.width}
               height={layer.height}
-              className="h-auto w-full opacity-20"
-              priority={false}
+              className="h-auto w-full max-h-[min(728px,70vh)] object-contain"
+              draggable={false}
             />
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
   );
 }

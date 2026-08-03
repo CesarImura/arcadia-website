@@ -21,11 +21,11 @@ export function FaqAccordion({ items }: FaqAccordionProps) {
         return (
           <div
             key={`${item.question}-${index}`}
-            className={
+            className={`px-4 py-5 transition-colors duration-300 ease-out ${
               isOpen
-                ? "bg-white px-4 py-5"
-                : "border-b border-black/15 px-4 py-5"
-            }
+                ? "bg-white"
+                : "border-b border-black/15"
+            }`}
           >
             <button
               type="button"
@@ -34,7 +34,7 @@ export function FaqAccordion({ items }: FaqAccordionProps) {
               aria-expanded={isOpen}
             >
               <span
-                className={`text-xl font-medium leading-[1.5] ${
+                className={`text-xl font-medium leading-[1.5] transition-colors duration-300 ${
                   isOpen ? "text-black" : "text-black/70"
                 }`}
               >
@@ -45,25 +45,36 @@ export function FaqAccordion({ items }: FaqAccordionProps) {
                 alt=""
                 width={24}
                 height={24}
-                className={`size-6 shrink-0 transition-opacity ${
-                  isOpen ? "opacity-100" : "opacity-40"
+                className={`size-6 shrink-0 transition-all duration-300 ease-out ${
+                  isOpen
+                    ? "rotate-180 opacity-100"
+                    : "rotate-0 opacity-40"
                 }`}
                 aria-hidden
               />
             </button>
 
-            {isOpen ? (
-              <div className="mt-2 max-w-[703px] text-xl leading-[1.5] text-black/70">
-                {item.answer.split(/\n{2,}/).map((paragraph, paragraphIndex) => (
-                  <p
-                    key={paragraphIndex}
-                    className={paragraphIndex > 0 ? "mt-0" : undefined}
-                  >
-                    {paragraph}
-                  </p>
-                ))}
+            <div
+              className="grid transition-[grid-template-rows,opacity,margin] duration-300 ease-out"
+              style={{
+                gridTemplateRows: isOpen ? "1fr" : "0fr",
+                opacity: isOpen ? 1 : 0,
+                marginTop: isOpen ? "0.5rem" : 0,
+              }}
+            >
+              <div className="overflow-hidden">
+                <div className="max-w-[703px] text-xl leading-[1.5] text-black/70">
+                  {item.answer.split(/\n{2,}/).map((paragraph, paragraphIndex) => (
+                    <p
+                      key={paragraphIndex}
+                      className={paragraphIndex > 0 ? "mt-4" : undefined}
+                    >
+                      {paragraph}
+                    </p>
+                  ))}
+                </div>
               </div>
-            ) : null}
+            </div>
           </div>
         );
       })}

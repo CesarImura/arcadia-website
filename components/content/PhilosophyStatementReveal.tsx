@@ -9,7 +9,11 @@ import {
   splitWords,
 } from "@/lib/philosophy-statement";
 
-const START_OPACITY = 0.3;
+const BASE_COLOR = "rgba(255, 255, 255, 0.3)";
+const FULL_COLOR = "rgba(255, 255, 255, 1)";
+const WAVE_COLOR = "#C0EDFF";
+/** Characters in the cyan → white wave front */
+const WAVE_WIDTH = 3;
 
 type PhilosophyStatementRevealProps = {
   statement: string;
@@ -34,26 +38,45 @@ export function PhilosophyStatementReveal({
 
     if (prefersReducedMotion) return;
 
-    const split = new SplitType(textEl, { types: "words" });
+    const split = new SplitType(textEl, { types: "chars" });
+    const chars = (split.chars ?? []) as HTMLElement[];
 
-    textEl.classList.remove("opacity-30");
-    gsap.set(split.words, { opacity: START_OPACITY });
+    gsap.set(chars, { color: BASE_COLOR });
 
-    const tween = gsap.to(split.words, {
-      opacity: 1,
-      ease: "none",
-      stagger: 0.08,
-      scrollTrigger: {
-        trigger: container,
-        start: "top 85%",
-        end: "top 25%",
-        scrub: 0.6,
+    const scrollTrigger = ScrollTrigger.create({
+      trigger: container,
+      start: "top 85%",
+      end: "top 25%",
+      scrub: 0.6,
+      onUpdate: (self) => {
+        const head = self.progress * (chars.length + WAVE_WIDTH);
+
+        chars.forEach((char, index) => {
+          const local = head - index;
+
+          if (local <= 0) {
+            gsap.set(char, { color: BASE_COLOR });
+            return;
+          }
+
+          if (local >= WAVE_WIDTH) {
+            gsap.set(char, { color: FULL_COLOR });
+            return;
+          }
+
+          gsap.set(char, {
+            color: gsap.utils.interpolate(
+              WAVE_COLOR,
+              FULL_COLOR,
+              local / WAVE_WIDTH,
+            ),
+          });
+        });
       },
     });
 
     return () => {
-      tween.scrollTrigger?.kill();
-      tween.kill();
+      scrollTrigger.kill();
       split.revert();
     };
   }, [statement]);
@@ -65,10 +88,10 @@ export function PhilosophyStatementReveal({
   return (
     <p
       ref={containerRef}
-      className="text-arc-heading leading-[1.3] text-white"
+      className="font-arc-sans text-arc-heading leading-[1.3] text-white/30"
       aria-label={`${highlight} ${body}`.trim()}
     >
-      <span ref={textRef} className="opacity-30">
+      <span ref={textRef}>
         {highlightWords.join(" ")}
         {bodyWords.length ? ` ${bodyWords.join(" ")}` : ""}
       </span>

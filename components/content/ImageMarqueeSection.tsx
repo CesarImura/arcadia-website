@@ -2,11 +2,14 @@
 
 import Image from "next/image";
 import { useRef } from "react";
+import { SectionBracketLabel } from "@/components/content/SectionBracketLabel";
+import { getSectionDefaultLabel } from "@/lib/section-index";
 import { useScrollVelocityMarquee } from "@/lib/use-scroll-velocity-marquee";
 import type { MarqueeImage } from "@/lib/marquee-images";
 
 type ImageMarqueeSectionProps = {
   images: MarqueeImage[];
+  label?: string;
 };
 
 function MarqueeTrack({ images }: { images: MarqueeImage[] }) {
@@ -31,7 +34,10 @@ function MarqueeTrack({ images }: { images: MarqueeImage[] }) {
   );
 }
 
-export function ImageMarqueeSection({ images }: ImageMarqueeSectionProps) {
+export function ImageMarqueeSection({
+  images,
+  label = getSectionDefaultLabel("gallery"),
+}: ImageMarqueeSectionProps) {
   const trackRef = useRef<HTMLDivElement>(null);
 
   useScrollVelocityMarquee(trackRef, images.length > 0);
@@ -46,6 +52,9 @@ export function ImageMarqueeSection({ images }: ImageMarqueeSectionProps) {
       aria-label="Galeria em movimento"
       data-header-theme="dark"
     >
+      <div className="mx-auto mb-8 flex max-w-[1920px] justify-center px-6 md:px-20">
+        <SectionBracketLabel sectionKey="gallery" label={label} tone="cyan" />
+      </div>
       <div className="relative">
         <div
           ref={trackRef}

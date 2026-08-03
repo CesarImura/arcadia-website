@@ -1,30 +1,6 @@
 @import "tailwindcss";
 @import "lenis/dist/lenis.css";
 
-@font-face {
-  font-family: "Arc Sans";
-  src: url("/fonts/arc-sans-regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Arc Sans";
-  src: url("/fonts/arc-sans-medium.woff2") format("woff2");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Arc Mono";
-  src: url("/fonts/arc-mono-regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
 :root {
   --background: #fafafa;
   --foreground: #171717;
@@ -39,16 +15,22 @@
   --color-muted: var(--muted);
   --color-border: var(--border);
   --color-accent: var(--accent);
-  --font-sans: "Arc Sans", var(--font-geist-sans), Arial, Helvetica, sans-serif;
-  --font-mono: "Arc Mono", var(--font-geist-mono), ui-monospace, monospace;
+  --font-sans: var(--font-helvetica), Arial, Helvetica, sans-serif;
+  --font-mono: var(--font-archimoto), ui-monospace, monospace;
+  --font-display: var(--font-faculty), Georgia, serif;
 }
 
 @utility font-arc-sans {
-  font-family: "Arc Sans", var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-helvetica), Arial, Helvetica, sans-serif;
+  font-weight: 500;
 }
 
 @utility font-arc-mono {
-  font-family: "Arc Mono", var(--font-geist-mono), ui-monospace, monospace;
+  font-family: var(--font-archimoto), ui-monospace, monospace;
+}
+
+@utility font-arc-display {
+  font-family: var(--font-faculty), Georgia, serif;
 }
 
 @utility text-arc-heading {
@@ -73,6 +55,56 @@
 
 @utility text-arc-card-title {
   font-size: clamp(1.25rem, 1rem + 0.6vw, 1.625rem);
+}
+
+@keyframes grain-drift {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  10% {
+    transform: translate(-4%, -6%);
+  }
+
+  20% {
+    transform: translate(-8%, 3%);
+  }
+
+  30% {
+    transform: translate(3%, -10%);
+  }
+
+  40% {
+    transform: translate(-3%, 8%);
+  }
+
+  50% {
+    transform: translate(-6%, 2%);
+  }
+
+  60% {
+    transform: translate(5%, -4%);
+  }
+
+  70% {
+    transform: translate(-2%, 6%);
+  }
+
+  80% {
+    transform: translate(4%, -2%);
+  }
+
+  90% {
+    transform: translate(-5%, 4%);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@utility animate-grain {
+  animation: grain-drift 8s steps(10) infinite;
 }
 
 @keyframes image-marquee {

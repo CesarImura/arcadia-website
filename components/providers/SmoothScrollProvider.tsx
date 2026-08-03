@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
+import { setScrollVelocity } from "@/lib/scroll-velocity";
 
 type SmoothScrollProviderProps = {
   children: ReactNode;
@@ -53,7 +54,10 @@ export function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {
 
     ScrollTrigger.defaults({ scroller });
 
-    lenis.on("scroll", ScrollTrigger.update);
+    lenis.on("scroll", (event) => {
+      ScrollTrigger.update();
+      setScrollVelocity(event.velocity);
+    });
 
     const ticker = (time: number) => {
       lenis.raf(time * 1000);

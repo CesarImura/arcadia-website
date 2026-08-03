@@ -1,7 +1,10 @@
 import { UspCard } from "@/components/cards/UspCard";
+import { SectionBracketLabel } from "@/components/content/SectionBracketLabel";
+import { getSectionDefaultLabel } from "@/lib/section-index";
 import type { UspCardItem } from "@/lib/usp-cards";
 
 type UspCardsSectionProps = {
+  label?: string;
   title?: string;
   description?: string;
   cards?: UspCardItem[];
@@ -10,6 +13,7 @@ type UspCardsSectionProps = {
 };
 
 export function UspCardsSection({
+  label = getSectionDefaultLabel("usp"),
   title,
   description,
   cards = [],
@@ -27,11 +31,14 @@ export function UspCardsSection({
       <div className="mx-auto flex max-w-[1920px] flex-col gap-10 px-6 py-16 md:px-20 md:py-24 lg:gap-14">
         {(title || description) && (
           <div className="flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-end">
-            {title ? (
-              <h2 className="max-w-[489px] font-arc-sans text-arc-heading leading-[1.2]">
-                {title}
-              </h2>
-            ) : null}
+            <div className="flex flex-col gap-6">
+              <SectionBracketLabel sectionKey="usp" label={label} tone="black" />
+              {title ? (
+                <h2 className="max-w-[11.5em] font-arc-sans text-arc-heading leading-[1.2]">
+                  {title}
+                </h2>
+              ) : null}
+            </div>
             {description ? (
               <p className="max-w-[573px] text-lg leading-[1.5] text-black/70">
                 {description}

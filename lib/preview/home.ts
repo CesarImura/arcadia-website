@@ -32,7 +32,7 @@ export const previewSiteSettings: SiteSettings = {
 
 export const previewHomePage: HomePage = {
   heroEyebrow: "nossos resultados",
-  heroTitle: "Marketing feito por quem entende arquitetura.",
+  heroTitle: "Marketing feito por quem entende|o mercado de arquitetura.",
   heroSubtitle:
     "Ajudamos escritórios de arquitetura a não depender de indicação através da metodologia ARC.\nAlcance, Relevância e Crescimento.",
   heroCta: {

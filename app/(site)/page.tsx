@@ -106,7 +106,7 @@ function resolveStatementSection(homePage?: HomePage | null) {
 
 const defaultHero = {
   eyebrow: "nossos resultados",
-  title: "Marketing feito por quem entende arquitetura.",
+  title: "Marketing feito por quem entende|o mercado de arquitetura.",
   subtitle:
     "Ajudamos escritórios de arquitetura a não depender de indicação através da metodologia ARC.\nAlcance, Relevância e Crescimento.",
   primaryCta: { label: "Veja nosso trabalho", href: "/projetos" },

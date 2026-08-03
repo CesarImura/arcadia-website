@@ -2,6 +2,7 @@ import Image from "next/image";
 import type { Link as CtaLink } from "@/lib/types";
 import { ArcButton } from "@/components/ui/ArcButton";
 import { HeroStatusLine } from "@/components/content/HeroStatusLine";
+import { SectionBracketLabel } from "@/components/content/SectionBracketLabel";
 
 type HeroProps = {
   eyebrow?: string;
@@ -10,6 +11,48 @@ type HeroProps = {
   primaryCta?: CtaLink;
   secondaryCta?: CtaLink;
 };
+
+function renderHeroTitle(title: string) {
+  if (title.includes("|")) {
+    const [line1, line2] = title.split("|");
+    return (
+      <>
+        {line1.trim()}
+        <br />
+        {line2.trim()}
+      </>
+    );
+  }
+
+  if (title.includes("\n")) {
+    const [line1, ...rest] = title.split("\n");
+    return (
+      <>
+        {line1.trim()}
+        <br />
+        {rest.join("\n").trim()}
+      </>
+    );
+  }
+
+  const breakMarker = " por ";
+  const breakIndex = title.indexOf(breakMarker);
+
+  if (breakIndex !== -1) {
+    const line1 = title.slice(0, breakIndex + breakMarker.length - 1);
+    const line2 = title.slice(breakIndex + breakMarker.length);
+
+    return (
+      <>
+        {line1}
+        <br />
+        {line2}
+      </>
+    );
+  }
+
+  return title;
+}
 
 export function Hero({
   eyebrow = "nossos resultados",
@@ -30,14 +73,15 @@ export function Hero({
     >
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-b from-[#04040d] from-0% via-[#1b2d48] via-[42%] to-[#e2e4e3] to-100%" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_120%_80%_at_50%_0%,rgba(226,228,227,0.15),transparent_55%)]" />
-        <div
-          className="absolute inset-0 opacity-25 mix-blend-soft-light"
-          style={{
-            backgroundImage: "url(/images/hero/noise-texture.png)",
-            backgroundSize: "573px 573px",
-          }}
-        />
+        <div className="absolute inset-0 overflow-hidden opacity-25 mix-blend-soft-light">
+          <div
+            className="animate-grain absolute inset-[-20%] bg-[url('/images/hero/noise-texture.png')] bg-[length:573px_573px]"
+            aria-hidden
+          />
+        </div>
+      </div>
+
+      <div className="relative z-10 mx-auto grid h-full max-w-[1920px] grid-rows-[auto_1fr_auto] gap-4 px-6 pb-[clamp(1.5rem,4vh,4rem)] pt-[clamp(5rem,14vh,7.5rem)] md:px-20">
         <div
           className="pointer-events-none absolute bottom-0 right-0 aspect-[840/301] w-[min(58vw,1120px,calc(38svh*840/301))] opacity-[0.05]"
           aria-hidden
@@ -51,18 +95,14 @@ export function Hero({
             priority
           />
         </div>
-      </div>
-
-      <div className="relative z-10 mx-auto grid h-full max-w-[1920px] grid-rows-[auto_1fr_auto] gap-4 px-6 pb-[clamp(1.5rem,4vh,4rem)] pt-[clamp(5rem,14vh,7.5rem)] md:px-20">
-        <div className="max-w-[1045px] space-y-[clamp(0.75rem,2vh,1.25rem)]">
-          <div className="flex items-center gap-2">
-            <span className="size-2 bg-white" />
-            <p className="text-sm uppercase tracking-[0.05em] text-white">
-              {eyebrow}
-            </p>
-          </div>
-          <h1 className="max-w-[1045px] text-arc-hero font-normal leading-[1.1] tracking-tight text-white">
-            {title}
+        <div className="space-y-[clamp(0.75rem,2vh,1.25rem)]">
+          <SectionBracketLabel
+            sectionKey="hero"
+            label={eyebrow}
+            tone="cyan"
+          />
+          <h1 className="max-w-[1045px] font-arc-sans text-arc-hero leading-[1.1] tracking-tight text-white">
+            {renderHeroTitle(title)}
           </h1>
         </div>
 
